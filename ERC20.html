@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="tài-liệu-kĩ-thuật---erc20">Tài Liệu Kĩ Thuật - ERC20</h1>
+<h2 id="tổng-quan">Tổng quan</h2>
+<ul>
+<li><strong>ERC20 (Ethereum Request for Comment)</strong> là tên gọi của một bộ các tiêu chuẩn mà những token được phát triển trên nền tảng blockchain của Ethereum phải tuân thủ theo. Để tạo ra các token trên nền tảng của Ethereum thì phải lập ra các hợp đồng thông minh (smart contract), và các smart contract này phải được lập trình theo tiêu chuẩn ERC20</li>
+<li>Cung cấp các chức năng cơ bản: transfer, cho phép token được sử dụng lại bởi các ứng dụng khác: ví, sàn giao dịch phi tập trung</li>
+</ul>
+<h2 id="các-quy-tắc">Các quy tắc</h2>
+<ul>
+<li>Quy tắc tùy chọn
+<ul>
+<li><strong>Token Name</strong> : Tên của token</li>
+<li><strong>Symbol</strong> : kí hiệu của token</li>
+<li><strong>Decimals</strong> : Số thập phân (lên đến 18), quy định về số lượng chữ số thập phân trong đơn vị của token. Decimals của VDS là 18, nghĩa là đơn vị nhỏ nhất của VDS là 0.000000000000000001 VDS.</li>
+</ul>
+</li>
+<li>Quy tắc bắt buộc
+<ul>
+<li><strong>TotalSupply</strong> : tổng nguồn cung của token</li>
+<li><strong>BalanceOf</strong> : Số dư của một ví đang có</li>
+<li><strong>Transfer</strong> : chuyển token từ ví của bạn sang ví của người dùng khác bằng cách cung cấp địa chỉ ví của người nhận và số token muốn chuyển.</li>
+<li><strong>TransferFrom</strong> : chuyển từ tài khoản này sang tài khoản khác, quy tắc này cũng khá tương tự như transfer nhưng tiện dụng hơn, để làm được điều này thì cần được ủy quyền.</li>
+<li><strong>Approve</strong> : Ủy quyền cho người khác sử dụng một số lượng token của mình</li>
+<li><strong>Allowance</strong> : kiểm tra số dư của token đã ủy quyền.</li>
+</ul>
+</li>
+</ul>
+<h2 id="các-phương-thức">Các phương thức</h2>
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name()</code></td>
+<td>Name of token</td>
+</tr>
+<tr>
+<td><code>decimals()</code></td>
+<td>Symbol of token</td>
+</tr>
+<tr>
+<td><code>symbol()</code></td>
+<td>Name of token</td>
+</tr>
+<tr>
+<td><code>totalSuppy()</code></td>
+<td>Token total supply</td>
+</tr>
+<tr>
+<td><code>balanceOf(_owner)</code></td>
+<td>The account balance of _owner</td>
+</tr>
+<tr>
+<td><code>transfer(_recipient, _amout)</code></td>
+<td>Transfer to _recipient _amount token</td>
+</tr>
+<tr>
+<td><code>approve(_spender, _amount)</code></td>
+<td>Approve _spender can use my  _amount token</td>
+</tr>
+<tr>
+<td><code>allowance(_owner, _spender)</code></td>
+<td>Check token approve left of _owner approved _spender</td>
+</tr>
+<tr>
+<td><code>transferFrom(_sender ,_recipient, _amout)</code></td>
+<td>Transfer from _sender to _recipient _amount token (need to approve)</td>
+</tr>
+</tbody>
+</table><h2 id="phí-giao-dịch">Phí giao dịch</h2>
+<h3 id="định-nghĩa">Định nghĩa</h3>
+<ul>
+<li>Phí giao dịch trên Ethereum (phí Gas)  đơn thuần là các khoản thanh toán được thực hiện bởi người dùng để đổi lấy năng lượng tính toán cần thiết nhằm xử lí và xác thực các giao dịch trên chuỗi khối Ethereum cùng một số yếu tố khác không phổ biến như khấu trừ chi phí cho người theo dõi, người tạo hợp đồng và cũng có thể thanh toán cho lượng sử dụng tăng lên của bộ nhớ</li>
+<li>Phí giao dịch được thanh toán bằng native token của mạng mà cụ thể ở đây là đồng ETH</li>
+</ul>
+<h3 id="cách-tính">Cách tính</h3>
+<ul>
+<li>Phí giao dịch ước tính: <code>TxFee = Gas_Price * Gas_Limit)</code></li>
+<li>Phí giao dịch thực tế: <code>TxFee = Gas_Price * Gas_Used)</code></li>
+</ul>
+<blockquote>
+<p>Trong đó:</p>
+<ul>
+<li>Gas Price: chi phí một Gas  (đơn vị thường dùng là Gwei (1 Gwei = 10-9 ETH))</li>
+<li>Gas Limit: số gas tối đa có thể trả cho giao dịch. Trong trường hợp Gas_Limit không đủ để thực hiện giao dịch, giao dịch sẽ rơi vào trạng thái hết Gas và thất bại, số Gas đã được sử dụng để đổi lấy năng lượng tính toán sẽ không hoàn lại. Số gas tối thiểu là 21000</li>
+<li>Gas Used: số gas đã được sử dụng thực tế. Số gas không được dùng sẽ được trả lại</li>
+</ul>
+</blockquote>
+<h3 id="vai-trò-của-gas_price">Vai trò của Gas_Price</h3>
+<ul>
+<li>2 transaction tương tự nhau sẽ tốn một lượng gas như nhau. Điều này cũng có thể hiểu vì gas là chi phí cho năng lượng tính toán, 2 giao dịch có input và điều kiện giống nhau sẽ tiêu tốn một năng lượng tính toán như nhau</li>
+<li>Những người xác thực trong mạng, vì lợi ích kinh tế nên họ sẽ chọn các giao dịch có phí gas cao. Vì vậy  Gas_Price càng cao thì giao dịch được thực hiện càng nhanh</li>
+<li>Trên mạng Ethereum, do khối lượng giao dịch lớn nên Gas_Price thay đổi liên tục.</li>
+<li><a href="https://etherscan.io/gastracker">[GasTracker]</a></li>
+<li><a href="https://etherscan.io/chart/gasprice">[Ethereum Average Gas Price]</a></li>
+</ul>
+<h3 id="phí-giao-dịch-thực-tế-dựa-trên-smart-contract-đi-kèm">Phí giao dịch thực tế (dựa trên smart contract đi kèm)</h3>
+<blockquote>
+<p>Vì phí giao dịch phụ thuộc vào độ phức tạp, tài nguyên smart contract sử dụng nên không có công  thức tính toán hay báo cáo chính thức nào. Chi phí này được tính toán trên việc khảo sát thực tế các giao dịch mạng Ethereum mainnet -  testnet</p>
+</blockquote>
+<ul>
+<li>Phí deploy: 1.800.000 gas &lt; … &lt; 1.900.000 gas</li>
+<li>Transfer Gas Limit: 21.000 gas &lt; … &lt; 77.000 gas</li>
+<li>Average Gas Price: 19.36 Gwei</li>
+<li>=&gt; Transfer Fee Max: 0.00040656 ETH &lt; … &lt; 0.00149072 ETH</li>
+<li>==&gt; Transfer Fee Max (10AM - 8/6):  1.01$ &lt; … &lt; 3.70$</li>
+</ul>
+<h2 id="thời-gian-giao-dịch">Thời gian giao dịch</h2>
+<ul>
+<li>Thời gian giao dịch phụ thuộc vào Gas_Price, thời gian này thay đổi liên tục. Bởi vậy trước khi thực hiện giao dịch hãy tham khảo thông số này</li>
+<li>Trong điều kiện lý tưởng, một giao dịch trên Ethereum mất khoảng 13s</li>
+<li><a href="https://etherscan.io/gastracker">[GasTracker]</a></li>
+</ul>
+<h2 id="tạo-token-theo-chuẩn-erc20">Tạo token theo chuẩn ERC20</h2>
+<ul>
+<li>
+<p>Step 1: Viết Smart Contract</p>
+<blockquote>
+<p>Smart Contract trên Ethereum được viết bằng ngôn ngữ Solidity</p>
+</blockquote>
+</li>
+<li>
+<p>Step 2: Complie</p>
+<blockquote>
+<p>Complie sẽ sinh ra 2 thành phần: ABI và Bytecode</p>
+</blockquote>
+<p><img src="https://i1.wp.com/i.imgur.com/vYcXagJ.png?resize=100%2C241&amp;ssl=1" alt="alt" width="400" height="300"></p>
+<ul>
+<li>ABI (Application Binary Interface) dùng để xác định hợp đồng thông minh được gọi và trả về theo định dạng mong đợi. Phần này thường được nhúng vào ứng dụng có sử dụng smart contract như một interface của smart contract</li>
+<li>Bytecode: đoạn mã có thể được thực thi trên EVM tạo thành các smart contract</li>
+</ul>
+</li>
+<li>
+<p>Step 3: Deploy</p>
+<blockquote>
+<p>Tạo một giao dịch deploy contract gửi tới địa chỉ 0 (0x0) của mạng</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="các-chuẩn-erc-khác">Các chuẩn ERC khác</h2>
+<ul>
+<li><strong>ERC223</strong><br>
+Tiêu chuẩn ERC223 được thiết kế để ngăn chặn việc chuyển token xảy ra sự cố, khắc phục hậu quả bị mất đến 3 triệu đô nói trên. Ngoài ra, ERC223 cũng giúp giảm chi phí giao dịch so với ERC20. Một số token ERC223 như Lendo (ELT), ProntaPay (PRO)…</li>
+<li><strong>ERC721</strong><br>
+Được tạo ra với ý tưởng đi ngược lại hoàn toàn với tính chất của các coin/token, là tính thay thế (fungible). Tính chất này có nghĩa là mỗi đồng coin/token đều có giá trị như nhau và được xử lý như nhau</li>
+<li><strong>ERC1155</strong><br>
+Là một sự kết hợp của cả ERC20 và ERC721, vì các token ERC1155 vừa là các token có thể thay thế (fungible), vừa không thể thay thế (non-fungible)</li>
+<li><strong>ERC621</strong><br>
+Được phát triển để bổ sung tính tăng có thể tăng hoặc giảm nguồn cung cho token</li>
+<li><strong>ERC777</strong><br>
+Là một phiên bản có cải tiến thêm về mặt bảo mật và nhiều tính năng nâng cao khác. ERC777 cung cấp nhiều tùy chọn khi xử lý các giao dịch liên quan đến token. Các token ERC777 sẽ tương thích với các token ERC20 theo hướng ngược lại.</li>
+</ul>
+<h4 id="tham-khảo-erc">Tham khảo: <a href="https://eips.ethereum.org/erc">ERC</a></h4>
+</div>
+</body>
+
+</html>

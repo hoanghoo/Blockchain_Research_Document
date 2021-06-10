@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="tài-liệu-kĩ-thuật---triển-khai-token-erc20_bep20">Tài Liệu Kĩ Thuật - Triển khai Token ERC20_BEP20</h1>
+<h4 id="một-số-từ-khóa-quan-trọng">Một số từ khóa quan trọng</h4>
+<ul>
+<li><code>ERC20</code>: Tiêu chuẩn phát triển token trên mạng Ethereum</li>
+<li><code>BEP20</code>: Tiêu chuẩn phát triển token trên mạng Binance Smart Chain</li>
+<li><code>EVM</code>: Ethereum Virtural Machine - máy ảo để chạy các hợp đồng thông minh trong mạng Ethereum và Binance Smart Chain</li>
+<li><code>Solidity</code>: Ngôn ngữ viết smart contract.</li>
+<li><code>Provider</code>: nhà cung cấp các  giao diện ngắn gọn, nhất quán cho các chức năng của một node mạng tiêu chuẩn</li>
+<li><code>Web3</code>: Thư viện JS cung cấp các API tương tác với Smart Contract thông qua 1 Provider.</li>
+<li><code>Metamask</code>: một wallet dạng extension trên Chrome.</li>
+<li><code>Remix</code>: IDE hoàn chỉnh cung cấp bởi Ethereum cho phép biên soạn, complie, deploy smart contract trực tiếp qua web-view</li>
+<li><code>ABI</code>: Application Binary Interface: interface của smart contract</li>
+<li><code>Bytecode</code>: Đoạn mã được có thể chạy trên EVM dùng để triển khai hợp đồng thông minh</li>
+</ul>
+<h2 id="tổng-quan">1. Tổng quan</h2>
+<h4 id="định-nghĩa">1.1 Định nghĩa</h4>
+<ul>
+<li>Là quá trình triển khai smart contract lên mạng Blockchain thực. Những smart contract này định nghĩa về thông tin và các phương thức của token theo chuân ERC20 (đối với Ethereum) và BEP20 (đối với Binance Smart Chain).</li>
+</ul>
+<h4 id="các-mạng-blockchain">1.2 Các mạng Blockchain</h4>
+<ul>
+<li>Có 2 loại public blockchain
+<ul>
+<li><strong>Mainnet:</strong> ( còn được gọi Homestead) Đây là blockchain trên thực tế. Native token có giá trị thực trên mạng này. Triển khai này mang tính chất thử nghiệm và phát triển nên chúng ta không dùng mạng này.</li>
+<li><strong>Testnet:</strong>  Đây là test blockchain, bạn hãy tưởng tượng nó như một QA hoặc staging server. Nó được sử dụng chỉ cho mục đích test. Các token trong mạng này đều vô giá trị. Ở triển khai này chúng ta sử dụng mạng này</li>
+</ul>
+</li>
+<li>Các mạng EVM và thông số kĩ thuật xem tại đây <a href="https://chainid.network/">[EVM Network]</a></li>
+<li>Trong triển khai này, ta sử dụng 2 mạng sau</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>ChainID</th>
+<th>Name</th>
+<th>Native Token</th>
+<th>Token Protocol</th>
+<th>Explorer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>Ethereum Testnet Ropsten</td>
+<td>ETH</td>
+<td>ERC20</td>
+<td><a href="https://ropsten.etherscan.io/">Ropsten</a></td>
+</tr>
+<tr>
+<td>97</td>
+<td>Binance Smart Chain Testnet</td>
+<td>BNB</td>
+<td>BEP20</td>
+<td><a href="https://testnet.bscscan.com/">BSC</a></td>
+</tr>
+</tbody>
+</table><h4 id="provider">1.3 Provider</h4>
+<ul>
+<li>Provider là một abstract của kết nối với mạng Blockchain, cung cấp giao diện ngắn gọn, nhất quán cho các chức năng của một node mạng tiêu chuẩn. Nói cách khác, một client muốn giao tiếp với node mạng thì phải đi qua provider này</li>
+<li>Các kiểu Provider
+<ul>
+<li>Không cần chạy node mạng (EtherscanProvider, Infura): cung cấp khả năng kết nối với các nhà cung cấp bên thứ ba công khai mà không cần phải tự chạy bất kỳ nút Ethereum nào.</li>
+<li>Phải chạy node mạng (JsonRpcProvider, IpcProvider): cho phép kết nối với các nút Ethereum mà bạn kiểm soát hoặc có quyền truy cập, bao gồm mainnet, testnet hoặc Ganache.</li>
+</ul>
+</li>
+<li>MetaMask cung cấp sẵn Web3 provider (một loại JsonRpcProvider) liên kết với wallet.</li>
+<li>Trong triển khai này, ta sử dụng <a href="https://infura.io/">Infura</a>. Infura là nhà cung cấp cơ sở hạ tầng cho Ethereum. Infura hoạt động như một IaaS (Infrastructure as a Service). Lựa chọn này là vì những ưu điểm sau
+<ul>
+<li>Miễn phí trong môi trường dev và dự án nhỏ (&lt;100.000 request/ngày)</li>
+<li>Cộng đồng sử dụng rộng lớn, tuy nhiên đây cũng chính là nút cổ chai của mạng lưới phi tập trung khi hoạt động của Infura đang ảnh hưởng trực tiếp tới 90% tổng số node hiện tại của Ethereum. Tham khảo <a href="https://sudungmaytinh.com/kiem-tien/blog-infura-nut-that-co-chai-tap-trung-cua-mang-luoi-phi-tap-trung-lon-nhat-the-gioi-ethereum/">[Infura - Nút cổ chai của mạng phi tập trung Ethereum]</a></li>
+<li>Nhanh chóng, ổn định, thiết lập đơn giản</li>
+</ul>
+</li>
+</ul>
+<h4 id="sơ-đồ-tổng-quát">1.4 Sơ đồ tổng quát</h4>
+<p><img src="https://ichi.pro/assets/images/max/724/1*ronMtzhop4EL70l8lItDGA.png" alt="alt"></p>
+<h4 id="điều-kiện-tiên-quyết">1.5 Điều kiện tiên quyết</h4>
+<ul>
+<li>
+<p>Đối với mạng Ropsten Ethereum Testnet</p>
+<ul>
+<li>Có ví trên Ethereum (có thể tạo bằng MetaMask hoặc chính ứng dụng sau khi triển khai)</li>
+<li>Số dư trong ví tối thiểu <strong>0.002 ETH</strong>, số dư này để thanh toán cho việc triển khai smart contract</li>
+<li>Lấy ETH cho tài khoản tại : <a href="https://faucet.ropsten.be/">[Ropsten Faucet]</a></li>
+</ul>
+</li>
+<li>
+<p>Đối với mạng Binance Smart Chain Testnet</p>
+<ul>
+<li>Có ví trên Ethereum (có thể tạo bằng MetaMask hoặc chính ứng dụng sau khi triển khai)</li>
+<li>Số dư trong ví tối thiểu <strong>0.002 BNB</strong>, số dư này để thanh toán cho việc triển khai smart contract</li>
+<li>Lấy ETH cho tài khoản tại : <a href="https://testnet.binance.org/faucet-smart">[Binance Faucet]</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="các-bước-triển-khai-một-token-erc20_bep20">2. Các bước triển khai một token ERC20_BEP20</h2>
+<ul>
+<li>Cách 1: Sử dụng Remix
+<ul>
+<li>Bước 1: Chuẩn bị : Smart Contract</li>
+<li>Bước 2: Complie smart contract</li>
+<li>Bước 3: Deploy smart contract với các tham số constructor (name, symbol, decimals, totalSupply)</li>
+</ul>
+</li>
+<li>Cách 2: Sử dụng web3
+<ul>
+<li>Bước 1: Chuẩn bị: Smart Contract, Infura Provider</li>
+<li>Bước 2: Complie smart contract, phần này tạo ra ABI và bytecode</li>
+<li>Bước 3: Kết nối client với mạng Ethereum thông qua Provider</li>
+<li>Bước 4: Tạo một giao dịch deploy smart contract với input là bytecode (sinh ra từ bước 2) và các tham số constructor (name, symbol, decimals, totalSupply)</li>
+<li>Bước 5: Kí giao dịch này bằng private-key</li>
+<li>Bước 6: Gửi giao dịch lên mạng</li>
+</ul>
+</li>
+</ul>
+<h3 id="cách-1-sử-dụng-remix">Cách 1: Sử dụng Remix</h3>
+<h4 id="bước-1-chuẩn-bị">Bước 1: Chuẩn bị</h4>
+<ul>
+<li>Smart Contract: <a href="https://bitbucket.org/vdc-team/researching-erc20-bep20/src/master/erc20_bep20/development/SmartContract/">VDS - Bitbucket</a></li>
+<li>Remixd (Optional): Thư viện dùng để kết nối Remix với localhost, đơn giản hóa việc đưa smart contract và quản lý phiên bản smart contract bằng git<br>
+<code>npm install -g @remix-project/remixd</code></li>
+<li>Đưa smart contract vào Remix
+<ul>
+<li>Truy cập <a href="https://remix.ethereum.org">Remix</a></li>
+<li>Tạo các file và nội dung tương ứng trên Remix như mã nguồn smart contract</li>
+<li>Nếu đã cài đặt Remixd, chạy script <code>remix-connect.sh</code>. Sau khi chạy script này truy cập Remix, trong <strong>Workspace</strong> chọn <strong>-connect to localhost -</strong> , chọn <strong>connect</strong></li>
+</ul>
+</li>
+<li>Kết nối Metamask với Remix (hướng dẫn trong bước 2)</li>
+</ul>
+<h4 id="các-bước-còn-lại">Các bước còn lại</h4>
+<ul>
+<li>Tham khảo <a href="https://docs.binance.org/smart-chain/developer/deploy/remix.html">[Remix - Deploy Token]</a></li>
+</ul>
+<h3 id="cách-2-sử-dụng-web3">Cách 2: Sử dụng Web3</h3>
+<h4 id="bước-1-chuẩn-bị-1">Bước 1: Chuẩn bị</h4>
+<ul>
+<li>Smart Contract: <a href="https://bitbucket.org/vdc-team/researching-erc20-bep20/src/master/erc20_bep20/development/SmartContract/">VDS - Bitbucket</a></li>
+<li>Remixd (Optional): Thư viện dùng để kết nối Remix với localhost, đơn giản hóa việc đưa smart contract và quản lý phiên bản smart contract bằng git<br>
+<code>npm install -g @remix-project/remixd</code></li>
+<li>Đưa smart contract vào Remix
+<ul>
+<li>Truy cập <a href="https://remix.ethereum.org">Remix</a></li>
+<li>Tạo các file và nội dung tương ứng trên Remix như mã nguồn smart contract</li>
+<li>Nếu đã cài đặt Remixd, chạy script <code>remix-connect.sh</code>. Sau khi chạy script này truy cập Remix, trong <strong>Workspace</strong> chọn <strong>-connect to localhost -</strong> , chọn <strong>connect</strong></li>
+<li>Provider (đối với Ethereum)
+<ul>
+<li>Truy cập <a href="https://infura.io/">Infura</a></li>
+<li>Đăng nhập</li>
+<li>Chọn tab Ethereum -&gt; Create new project. Nhập tên Project</li>
+<li>Chọn endpoint là Ropsten, lưu lại 2 địa chỉ RPC. Ở đây là dùng địa chi HTTPS.<br>
+Ví dụ <code>https://ropsten.infura.io/v3/888db53f946f4865b69bb17d98aa43ad</code></li>
+</ul>
+</li>
+<li>Đối với Binance Smart Chain: mạng BSC đã dựng sẵn Provider cho testnet tại <code>https://data-seed-prebsc-1-s1.binance.org:8545</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="bước-2-complie">Bước 2: Complie</h4>
+<ul>
+<li>Ở đây ta sẽ sử dụng  Remix để complie. Quá trình complie tương tự cách 1. Tham khảo <a href="https://docs.binance.org/smart-chain/developer/deploy/remix.html">[Remix - Deploy Token]</a></li>
+<li>Sau quá trình complie, ta lưu trữ ABI và Bytecode của ERC20.sol lại</li>
+</ul>
+<h4 id="bước-3-kết-nối-client-với-mạng-thông-qua-provider">Bước 3: Kết nối client với mạng thông qua Provider</h4>
+<ul>
+<li>Sử dụng Web3 để kết nối với Provider qua HTTP-RPC<br>
+<code>let web3 = new Web3("https://ropsten.infura.io/v3/888db53f946f4865b69bb17d98aa43ad")</code></li>
+</ul>
+<h4 id="bước-4-tạo-một-giao-dịch-deploy-smart-contract">Bước 4: Tạo một giao dịch deploy smart contract</h4>
+<ul>
+<li>Tạo một smart contract mới với tất cả các method và event của nó được xác định trong ABI từ bước 2<br>
+<code>let contract = new web3.eth.Contract(ERC20_BEP20.ABI);</code></li>
+<li>Định nghĩa contract là deploy contract với bytecode và các tham số constructor. Hàm này trả về một phiên bản contract mới.<br>
+<code>let contract_encode = contract.deploy({data : bytecode, arguments: [tokenName, tokenSymbol, tokenDecimals, tokenTotalSuppy]}).encodeABI();</code></li>
+</ul>
+<h4 id="bước-5-kí-giao-dịch-này-bằng-private-key">Bước 5: Kí giao dịch này bằng private-key</h4>
+<ul>
+<li>Quyết định gasLimit (ở dạng Hexadecimal)<br>
+<code>let tx = {data : contract_encode, gas: '0x1b7740'}</code></li>
+<li>Kí giao dịch bằng private-key<br>
+<code>let signed = web3.eth.accounts.signTransaction(tx, privateKey);</code></li>
+</ul>
+<h4 id="bước-6-gửi-giao-dịch-lên-mạng">Bước 6: Gửi giao dịch lên mạng</h4>
+<ul>
+<li>Gửi giao dịch đã được kí bởi privateKey lên mạng<br>
+<code>web3.eth.sendSignedTransaction(signed.rawTransaction)</code></li>
+</ul>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="tài-liệu-kĩ-thuật---bep20">Tài Liệu Kĩ Thuật - BEP20</h1>
+<h2 id="tổng-quan">Tổng quan</h2>
+<ul>
+<li><strong>BEP20</strong> là tên gọi của một bộ các tiêu chuẩn mà những token được phát triển trên nền tảng blockchain của <strong>Binance Smart Chain</strong> phải tuân thủ theo.</li>
+<li>Tiêu chuẩn này dựa trên chuẩn ERC20 của Ethereum, nhằm tăng cường khả năng tương thích tối đa với EVM cũng như tận dụng hệ sinh thái rộng lớn của Ethereum</li>
+<li>Cung cấp các chức năng cơ bản: transfer, cho phép token được sử dụng lại bởi các ứng dụng khác: ví, sàn giao dịch phi tập trung và <strong>di chuyển tài sản giữa Binance Chain và Binance Smart Chain</strong></li>
+<li>Nói một cách khác, BEP20 chính là ERC20 chạy trên Binance Smart Chain. Nghĩa là nếu BEP20 không liên kết cross-chain mà chỉ chạy độc lập trên Binance Smart Chain, nó tương tự ERC20</li>
+</ul>
+<h2 id="các-quy-tắc">Các quy tắc</h2>
+<ul>
+<li>Quy tắc tùy chọn
+<ul>
+<li><strong>Token Name</strong> : Tên của token</li>
+<li><strong>Symbol</strong> : kí hiệu của token</li>
+<li><strong>Decimals</strong> : Số thập phân (lên đến 18), quy định về số lượng chữ số thập phân trong đơn vị của token. Decimals của VDS là 18, nghĩa là đơn vị nhỏ nhất của VDS là 0.000000000000000001 VDS.</li>
+<li><strong>Owner</strong> : Chủ sở hữu hợp đồng thông minh, chính là người đã khởi tạo giao dịch triển khai hợp đồng thông minh lên mạng</li>
+</ul>
+</li>
+<li>Quy tắc bắt buộc
+<ul>
+<li><strong>TotalSupply</strong> : tổng nguồn cung của token</li>
+<li><strong>BalanceOf</strong> : Số dư của một ví đang có</li>
+<li><strong>Transfer</strong> : chuyển token từ ví của bạn sang ví của người dùng khác bằng cách cung cấp địa chỉ ví của người nhận và số token muốn chuyển.</li>
+<li><strong>TransferFrom</strong> : chuyển từ tài khoản này sang tài khoản khác, quy tắc này cũng khá tương tự như transfer nhưng tiện dụng hơn, để làm được điều này thì cần được ủy quyền.</li>
+<li><strong>Approve</strong> : Ủy quyền cho người khác sử dụng một số lượng token của mình</li>
+<li><strong>Allowance</strong> : kiểm tra số dư của token đã ủy quyền.</li>
+</ul>
+</li>
+</ul>
+<h2 id="các-phương-thức">Các phương thức</h2>
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name()</code></td>
+<td>Name of token</td>
+</tr>
+<tr>
+<td><code>decimals()</code></td>
+<td>Symbol of token</td>
+</tr>
+<tr>
+<td><code>symbol()</code></td>
+<td>Name of token</td>
+</tr>
+<tr>
+<td><code>getOwner()</code></td>
+<td>Returns the bep20 token owner which is necessary for binding with bep2 token</td>
+</tr>
+<tr>
+<td><code>totalSuppy()</code></td>
+<td>Token total supply</td>
+</tr>
+<tr>
+<td><code>balanceOf(_owner)</code></td>
+<td>The account balance of _owner</td>
+</tr>
+<tr>
+<td><code>transfer(_recipient, _amout)</code></td>
+<td>Transfer to _recipient _amount token</td>
+</tr>
+<tr>
+<td><code>approve(_spender, _amount)</code></td>
+<td>Approve _spender can use my  _amount token</td>
+</tr>
+<tr>
+<td><code>allowance(_owner, _spender)</code></td>
+<td>Check token approve left of _owner approved _spender</td>
+</tr>
+<tr>
+<td><code>transferFrom(_sender ,_recipient, _amout)</code></td>
+<td>Transfer from _sender to _recipient _amount token (need to approve)</td>
+</tr>
+</tbody>
+</table><h2 id="phí-giao-dịch">Phí giao dịch</h2>
+<h3 id="định-nghĩa">Định nghĩa</h3>
+<ul>
+<li>Phí giao dịch trên Binance Smart Chain (phí Gas)  đơn thuần là các khoản thanh toán được thực hiện bởi người dùng để đổi lấy năng lượng tính toán cần thiết nhằm xử lí và xác thực các giao dịch trên chuỗi khối  cùng một số yếu tố khác không phổ biến như khấu trừ chi phí cho người theo dõi, người tạo hợp đồng và cũng có thể thanh toán cho lượng sử dụng tăng lên của bộ nhớ</li>
+<li>Phí giao dịch được thanh toán bằng native token của mạng mà cụ thể ở đây là đồng BNB</li>
+<li>Do cùng kiểu xác thực như Ethereum (sử dụng EVM) nên cách tính phí giao dịch là như nhau</li>
+</ul>
+<h3 id="cách-tính">Cách tính</h3>
+<ul>
+<li>Phí giao dịch ước tính: <code>TxFee = Gas_Price * Gas_Limit)</code></li>
+<li>Phí giao dịch thực tế: <code>TxFee = Gas_Price * Gas_Used)</code></li>
+</ul>
+<blockquote>
+<p>Trong đó:</p>
+<ul>
+<li>Gas Price: chi phí một Gas  (đơn vị thường dùng là Gwei (1 Gwei = 10-9 BNB))</li>
+<li>Gas Limit: số gas tối đa có thể trả cho giao dịch. Trong trường hợp Gas_Limit không đủ để thực hiện giao dịch, giao dịch sẽ rơi vào trạng thái hết Gas và thất bại, số Gas đã được sử dụng để đổi lấy năng lượng tính toán sẽ không hoàn lại. Số gas tối thiểu là 21000</li>
+<li>Gas Used: số gas đã được sử dụng thực tế. Số gas không được dùng sẽ được trả lại</li>
+</ul>
+</blockquote>
+<h3 id="vai-trò-của-gas_price">Vai trò của Gas_Price</h3>
+<ul>
+<li>2 transaction tương tự nhau sẽ tốn một lượng gas như nhau. Điều này cũng có thể hiểu vì gas là chi phí cho năng lượng tính toán, 2 giao dịch có input và điều kiện giống nhau sẽ tiêu tốn một năng lượng tính toán như nhau</li>
+<li>Những người xác thực trong mạng, vì lợi ích kinh tế nên họ sẽ chọn các giao dịch có phí gas cao. Vì vậy  Gas_Price càng cao thì giao dịch được thực hiện càng nhanh</li>
+<li>Trên mạng Binance Smart Chain, Gas Price nhìn chung giữ ở mức ổn định là ~7 Gwei</li>
+<li><a href="https://bscscan.com/chart/gasprice">[GasTracker]</a></li>
+</ul>
+<h3 id="phí-giao-dịch-thực-tế-dựa-trên-smart-contract-đi-kèm">Phí giao dịch thực tế (dựa trên smart contract đi kèm)</h3>
+<blockquote>
+<p>Vì phí giao dịch phụ thuộc vào độ phức tạp, tài nguyên smart contract sử dụng nên không có công  thức tính toán hay báo cáo chính thức nào. Chi phí này được tính toán trên việc khảo sát thực tế các giao dịch mạng Binance Smart Chain mainnet -  testnet</p>
+</blockquote>
+<ul>
+<li>Phí deploy: 1.800.000 gas &lt; … &lt; 1.900.000 gas</li>
+<li>Transfer Gas Limit: 21.000 gas &lt; … &lt; 77.000 gas</li>
+<li>Average Gas Price: 5 Gwei</li>
+<li>=&gt; Transfer Fee Max: 0.000105 BNB&lt; … &lt; 0.000385 BNB</li>
+<li>==&gt; Transfer Fee Max (10AM - 8/6):  0.04$ &lt; … &lt; 0.13$</li>
+</ul>
+<h2 id="thời-gian-giao-dịch">Thời gian giao dịch</h2>
+<ul>
+<li>Thời gian giao dịch phụ thuộc vào Gas_Price, thời gian này thay đổi liên tục. Gas Price của Binance Smart Chain giữ ở mức ổn định nên thời gian giao dịch cũng ở mức ổn định.</li>
+<li>Thời gian giao dịch trên Binance Smart Chain là 3s</li>
+</ul>
+<h2 id="tạo-token-theo-chuẩn-bep20">Tạo token theo chuẩn BEP20</h2>
+<ul>
+<li>
+<p>Step 1: Viết Smart Contract</p>
+<blockquote>
+<p>Smart Contract trên Ethereum được viết bằng ngôn ngữ Solidity</p>
+</blockquote>
+</li>
+<li>
+<p>Step 2: Complie</p>
+<blockquote>
+<p>Complie sẽ sinh ra 2 thành phần: ABI và Bytecode</p>
+</blockquote>
+<p><img src="https://i1.wp.com/i.imgur.com/vYcXagJ.png?resize=100%2C241&amp;ssl=1" alt="alt" width="400" height="300"></p>
+<ul>
+<li>ABI (Application Binary Interface) dùng để xác định hợp đồng thông minh được gọi và trả về theo định dạng mong đợi. Phần này thường được nhúng vào ứng dụng có sử dụng smart contract như một interface của smart contract</li>
+<li>Bytecode: đoạn mã có thể được thực thi trên EVM tạo thành các smart contract</li>
+</ul>
+</li>
+<li>
+<p>Step 3: Deploy</p>
+<blockquote>
+<p>Tạo một giao dịch deploy contract gửi tới địa chỉ 0 (0x0) của mạng</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="các-chuẩn-bep-khác">Các chuẩn BEP khác</h2>
+<ul>
+<li><strong>BEP-1</strong>: Purpose and Guidelines of BEP</li>
+<li><strong>BEP-2</strong>: Tokens on Binance Chain</li>
+<li><strong>BEP-3</strong>: HTLC and Atomic Peg</li>
+<li><strong>BEP-6</strong>: Delist Trading Pairs on Binance Chain</li>
+<li><strong>BEP-8</strong>: Mini-BEP2 Tokens</li>
+<li><strong>BEP-9</strong>: Time Locking of Tokens on Binance Chain</li>
+<li><strong>BEP-10</strong>: Registered Types for Transaction Source</li>
+<li><strong>BEP-12</strong>: Introduce Customized Scripts and Transfer Memo Validation</li>
+<li><strong>BEP-18</strong>: State sync enhancement</li>
+<li><strong>BEP-19</strong>: Introduce Maker and Taker for Match Engine</li>
+<li><strong>BEP-20</strong>: Tokens on Binance Smart Chain</li>
+<li><strong>BEP-70</strong>: List and Trade BUSD Pairs</li>
+<li><strong>BEP-67</strong>: Price-based Order</li>
+<li><strong>BEP-82</strong>: Token Ownership Changes</li>
+<li><strong>BEP-84</strong>: Mirror BEP20 to Binance Chain</li>
+<li><strong>BEP-86</strong>: Dynamic Extra Incentive For BSC Relayers</li>
+<li><strong>BEP-87</strong>: Token Symbol Minimum Length Change</li>
+<li><strong>BEP-89</strong>: Visual Fork of Binance Smart Chain</li>
+<li><strong>BEP-91</strong>: Increase Block Gas Ceiling for Binance Smart Chain</li>
+</ul>
+<h4 id="tham-khảo-beps">Tham khảo: <a href="https://github.com/binance-chain/BEPs">BEPs</a></h4>
+</div>
+</body>
+
+</html>

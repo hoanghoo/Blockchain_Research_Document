@@ -1,0 +1,430 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="wallet--testing-erc20---bep20">Wallet &amp; Testing ERC20 - BEP20</h1>
+<h2 id="collection">Collection</h2>
+<p><a href="https://bitbucket.org/vdc-team/researching-erc20-bep20/src/master/erc20_bep20/development/Wallet_API_web3/postman_collection/VDS.postman_collection.json">[Postman Collection]</a></p>
+<h2 id="install">Install</h2>
+<pre><code> npm install
+</code></pre>
+<h2 id="run">Run</h2>
+<pre><code> npm start
+</code></pre>
+<p>Service will be running at <strong>localhost:3300</strong></p>
+<p>Subsequent response definitions will only detail the expected value of the <code>data field</code></p>
+<h2 id="routes">Routes</h2>
+<ul>
+<li>Wallet
+<ul>
+<li>Network
+<ul>
+<li>List network</li>
+<li>Create a network</li>
+<li>Delete a network</li>
+</ul>
+</li>
+<li>Address
+<ul>
+<li>List address</li>
+<li>Create an address</li>
+<li>Delete an address</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Account
+<ul>
+<li>Native
+<ul>
+<li>Balance</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Contract
+<ul>
+<li>Contract
+<ul>
+<li>List contract</li>
+<li>Deploy contract</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Transaction
+<ul>
+<li>ERC20_BEP20
+<ul>
+<li>Name</li>
+<li>Symbol</li>
+<li>Decimals</li>
+<li>TotalSupply</li>
+<li>BalanceOf</li>
+<li>Transfer</li>
+<li>Approve</li>
+<li>Allowance</li>
+<li>TransferFrom</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="list-network">List Network</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Return network list</li>
+<li><code>GET /wallet/network/list</code></li>
+<li></li>
+</ul>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"3"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+		<span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"Ropsten"</span><span class="token punctuation">,</span>
+		<span class="token string">"RPC"</span><span class="token punctuation">:</span> <span class="token string">"https://ropsten.infura.io/v3/888db53f946f4865b69bb17d98aa43ad"</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token string">"97"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+		<span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"Binance Smart Chain"</span><span class="token punctuation">,</span>
+		<span class="token string">"RPC"</span><span class="token punctuation">:</span> <span class="token string">"https://data-seed-prebsc-1-s1.binance.org:8545"</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="create-network">Create Network</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Add a network</li>
+<li><code>POST /wallet/network/create</code></li>
+</ul>
+<p><strong>Arguments</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"chainID"</span><span class="token punctuation">:</span><span class="token string">"5"</span><span class="token punctuation">,</span>
+	<span class="token string">"chainName"</span><span class="token punctuation">:</span><span class="token string">"name"</span><span class="token punctuation">,</span>
+	<span class="token string">"chainRPC"</span><span class="token punctuation">:</span><span class="token string">"abc"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>201</code> Created</li>
+</ul>
+<h3 id="delete-network">Delete Network</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Delete a network</li>
+<li><code>DELETE/wallet/network/delete</code></li>
+</ul>
+<p><strong>Arguments</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"chainID"</span><span class="token punctuation">:</span><span class="token string">"5"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+<h3 id="list-address">List Address</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Return address list of chainID</li>
+<li><code>GET /wallet/address/:chainID/list</code></li>
+</ul>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">[</span><span class="token string">"0x9c3D57EaD49a1847ECFCDA774A7165927d7E5ABd"</span><span class="token punctuation">]</span>
+</code></pre>
+<h3 id="create-address">Create Address</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Add an address of chainID</li>
+<li><code>POST /wallet/address/:chainID/create</code></li>
+</ul>
+<p><strong>Arguments</strong></p>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>201</code> Created</li>
+</ul>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+	<span class="token string">"chainID"</span><span class="token punctuation">:</span> <span class="token string">"97"</span><span class="token punctuation">,</span>
+	<span class="token string">"address"</span><span class="token punctuation">:</span> <span class="token string">"0xB4B1CdE172354B6b059777d1E5D2FDF8e745aE3d"</span><span class="token punctuation">,</span>
+	<span class="token string">"privateKey"</span><span class="token punctuation">:</span> <span class="token string">"0x618cdb4de92eeb7dc36ffe289c1abb9b33a1eb0edd983a471361330bb35ecd63"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="delete-address">Delete Address</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Delete an address</li>
+<li><code>DELETE /wallet/address/:chainID/delete</code></li>
+</ul>
+<p><strong>Arguments</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"address"</span><span class="token punctuation">:</span><span class="token string">"0xB4B1CdE172354B6b059777d1E5D2FDF8e745aE3d"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+<h3 id="get-native-balance">Get Native Balance</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Get native balance (ETH/BNB)</li>
+<li><code>GET /account/:chainID/balance</code></li>
+</ul>
+<p><strong>Arguments</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"address"</span><span class="token punctuation">:</span><span class="token string">"0x5a49D0444F0c2a73D82A7c4734c19C35e9BDCf27"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"address"</span><span class="token punctuation">:</span> <span class="token string">"0x5a49D0444F0c2a73D82A7c4734c19C35e9BDCf27"</span><span class="token punctuation">,</span>
+	<span class="token string">"balance"</span><span class="token punctuation">:</span> <span class="token number">0.991221622</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="get-contract-list">Get Contract List</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Get list contract of</li>
+<li><code>GET /contract/:chainID/list</code></li>
+</ul>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">[</span><span class="token string">"0x7a474Eaa017B2d03Af455B5Ba36450d5D200C5e5"</span><span class="token punctuation">]</span>
+</code></pre>
+<h3 id="deploy-a-token">Deploy a token</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Deploy a token ERC20_BEP20</li>
+<li><code>POST /account/:chainID/balance</code></li>
+</ul>
+<p><strong>Arguments</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"address"</span><span class="token punctuation">:</span><span class="token string">"0x877B6159AC48F638722C8F325DceA72a57947363"</span><span class="token punctuation">,</span>
+	<span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"VIETNAM3"</span><span class="token punctuation">,</span>
+	<span class="token string">"symbol"</span><span class="token punctuation">:</span> <span class="token string">"VND3"</span><span class="token punctuation">,</span>
+	<span class="token string">"decimals"</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+	<span class="token string">"totalSupply"</span><span class="token punctuation">:</span> <span class="token number">3000000</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"blockHash"</span><span class="token punctuation">:</span> <span class="token string">"0x4e97486036bcd2e1c9dffa45b50f8311815db4bdeb1a3617d023d34e4be955d4"</span><span class="token punctuation">,</span>
+	<span class="token string">"blockNumber"</span><span class="token punctuation">:</span> <span class="token number">9606778</span><span class="token punctuation">,</span>
+	<span class="token string">"contractAddress"</span><span class="token punctuation">:</span> <span class="token string">"0x682eEe0011ba9C7619Ae6B1D8922321E4F924a36"</span><span class="token punctuation">,</span>
+	<span class="token string">"cumulativeGasUsed"</span><span class="token punctuation">:</span> <span class="token number">2830155</span><span class="token punctuation">,</span>
+	<span class="token string">"from"</span><span class="token punctuation">:</span> <span class="token string">"0x877b6159ac48f638722c8f325dcea72a57947363"</span><span class="token punctuation">,</span>
+	<span class="token string">"gasUsed"</span><span class="token punctuation">:</span> <span class="token number">1216141</span><span class="token punctuation">,</span>
+	<span class="token operator">...</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="name">Name</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Return token name</li>
+<li><code>GET /transaction/:chainID/token/name</code></li>
+</ul>
+<p><strong>Arguments</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"contractAddress"</span><span class="token punctuation">:</span><span class="token string">"0x682eEe0011ba9C7619Ae6B1D8922321E4F924a36"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"result"</span><span class="token punctuation">:</span> <span class="token string">"VIETNAM3"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="symbol">Symbol</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Return token symbol</li>
+<li><code>GET /transaction/:chainID/token/symbol</code></li>
+</ul>
+<p><strong>Arguments</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"contractAddress"</span><span class="token punctuation">:</span><span class="token string">"0x682eEe0011ba9C7619Ae6B1D8922321E4F924a36"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"result"</span><span class="token punctuation">:</span> <span class="token string">"VND3"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="decimals">Decimals</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Return token decimals</li>
+<li><code>GET /transaction/:chainID/token/decimals</code></li>
+</ul>
+<p><strong>Arguments</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"contractAddress"</span><span class="token punctuation">:</span><span class="token string">"0x682eEe0011ba9C7619Ae6B1D8922321E4F924a36"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"result"</span><span class="token punctuation">:</span> <span class="token string">"0"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="totalsupply">TotalSupply</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Return token total supply</li>
+<li><code>GET /transaction/:chainID/token/totalSupply</code></li>
+</ul>
+<p><strong>Arguments</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"contractAddress"</span><span class="token punctuation">:</span><span class="token string">"0x682eEe0011ba9C7619Ae6B1D8922321E4F924a36"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"result"</span><span class="token punctuation">:</span> <span class="token string">"3000000"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="balanceof">BalanceOf</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Return balance of address</li>
+<li><code>GET /transaction/:chainID/token/balanceOf</code></li>
+</ul>
+<p><strong>Arguments</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"contractAddress"</span><span class="token punctuation">:</span><span class="token string">"0x682eEe0011ba9C7619Ae6B1D8922321E4F924a36"</span><span class="token punctuation">,</span>
+	<span class="token string">"address"</span><span class="token punctuation">:</span><span class="token string">"0x877B6159AC48F638722C8F325DceA72a57947363"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"result"</span><span class="token punctuation">:</span> <span class="token string">"3000000"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="transfer">Transfer</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Transfer from _sender to _recipient _amount token</li>
+<li><code>POST /transaction/:chainID/token/transfer</code></li>
+</ul>
+<p><strong>Arguments</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"contractAddress"</span><span class="token punctuation">:</span><span class="token string">"0x682eEe0011ba9C7619Ae6B1D8922321E4F924a36"</span><span class="token punctuation">,</span>
+	<span class="token string">"sender"</span><span class="token punctuation">:</span><span class="token string">"0x877B6159AC48F638722C8F325DceA72a57947363"</span><span class="token punctuation">,</span>
+	<span class="token string">"recipient"</span><span class="token punctuation">:</span><span class="token string">"0x76CAd360f1a9A6f28552dA39Bf453f352B4719c5"</span><span class="token punctuation">,</span>
+	<span class="token string">"amount"</span><span class="token punctuation">:</span><span class="token number">100</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"result"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+	<span class="token string">"blockHash"</span><span class="token punctuation">:</span> <span class="token string">"0x9271b4cc050331cdebb223fda949a3d2d6fbfd10dfe63489ea475eb89e8b0b12"</span><span class="token punctuation">,</span>
+	<span class="token string">"blockNumber"</span><span class="token punctuation">:</span> <span class="token number">9607011</span><span class="token punctuation">,</span>
+	<span class="token string">"contractAddress"</span><span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+	<span class="token string">"cumulativeGasUsed"</span><span class="token punctuation">:</span> <span class="token number">477083</span><span class="token punctuation">,</span>
+	<span class="token string">"from"</span><span class="token punctuation">:</span> <span class="token string">"0x877b6159ac48f638722c8f325dcea72a57947363"</span><span class="token punctuation">,</span>
+	<span class="token string">"gasUsed"</span><span class="token punctuation">:</span> <span class="token number">51231</span><span class="token punctuation">,</span>
+	<span class="token operator">...</span>
+	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+	<span class="token string">"to"</span><span class="token punctuation">:</span> <span class="token string">"0x682eee0011ba9c7619ae6b1d8922321e4f924a36"</span><span class="token punctuation">,</span>
+	<span class="token string">"transactionHash"</span><span class="token punctuation">:</span> <span class="token string">"0xe064a2b9b0b0887b619cb1afdafcb70e297512752818abcee2b19ec0fafe5135"</span><span class="token punctuation">,</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="approve">Approve</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Approve _amount token to _spender</li>
+<li><code>POST /transaction/:chainID/token/approve</code></li>
+</ul>
+<p><strong>Arguments</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"contractAddress"</span><span class="token punctuation">:</span><span class="token string">"0xbb29b70f8B0Ba40715bd27b1443C0202f1845689"</span><span class="token punctuation">,</span>
+	<span class="token string">"sender"</span><span class="token punctuation">:</span><span class="token string">"0x5a49D0444F0c2a73D82A7c4734c19C35e9BDCf27"</span><span class="token punctuation">,</span>
+	<span class="token string">"spender"</span><span class="token punctuation">:</span><span class="token string">"0x3cd95381a66E4Db28B29704bCE59c9F475a1Aa89"</span><span class="token punctuation">,</span>
+	<span class="token string">"amount"</span><span class="token punctuation">:</span><span class="token number">500</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+<h3 id="allowance">Allowance</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Return allowance left what is approve from _owner to spender</li>
+<li><code>GET /transaction/:chainID/token/allowance</code></li>
+</ul>
+<p><strong>Arguments</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"contractAddress"</span><span class="token punctuation">:</span><span class="token string">"0xbb29b70f8B0Ba40715bd27b1443C0202f1845689"</span><span class="token punctuation">,</span>
+	<span class="token string">"owner"</span><span class="token punctuation">:</span><span class="token string">"0x5a49D0444F0c2a73D82A7c4734c19C35e9BDCf27"</span><span class="token punctuation">,</span>
+	<span class="token string">"spender"</span><span class="token punctuation">:</span><span class="token string">"0x3cd95381a66E4Db28B29704bCE59c9F475a1Aa89"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"result"</span><span class="token punctuation">:</span> <span class="token string">"3000000"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="transferfrom">TransferFrom</h3>
+<p><strong>Definition</strong></p>
+<ul>
+<li>Transfer from _owner to _recipient _amount token (has been approved)</li>
+<li><code>POST /transaction/:chainID/token/transferFrom</code></li>
+</ul>
+<p><strong>Arguments</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"contractAddress"</span><span class="token punctuation">:</span><span class="token string">"0x682eEe0011ba9C7619Ae6B1D8922321E4F924a36"</span><span class="token punctuation">,</span>
+	<span class="token string">"sender"</span><span class="token punctuation">:</span><span class="token string">"0x877B6159AC48F638722C8F325DceA72a57947363"</span><span class="token punctuation">,</span>
+	<span class="token string">"owner"</span><span class="token punctuation">:</span><span class="token string">"0x5a49D0444F0c2a73D82A7c4734c19C35e9BDCf27"</span><span class="token punctuation">,</span>
+	<span class="token string">"recipient"</span><span class="token punctuation">:</span><span class="token string">"0x76CAd360f1a9A6f28552dA39Bf453f352B4719c5"</span><span class="token punctuation">,</span>
+	<span class="token string">"amount"</span><span class="token punctuation">:</span><span class="token number">100</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Expect Response</strong></p>
+<ul>
+<li><code>200</code> Success</li>
+</ul>
+</div>
+</body>
+
+</html>
